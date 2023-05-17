@@ -36,7 +36,7 @@ def main():
         print(e)
         net.add_edge(e['source'], e['target'])
 
-    net.show('graph.html', notebook=False)
+    net.show('index.html', notebook=False)
 
 
 def time_data_label(seconds):
