@@ -20,7 +20,8 @@ def main():
             time_label = f'{days} วัน' if days > 0 else f'{hours} ชั่วโมง' if hours > 0 else f'{mins} นาที'  # noqa: E501
             net.add_node(v['id'], label=f"{v['label']}\n{time_label}",
                          title=title,
-                         color=color)
+                         color=color,
+                         size=max(5, days / 10))
 
     for e in G['E']:
         net.add_edge(e['source'], e['target'])
