@@ -36,13 +36,23 @@ def main():
     district_type_edges = defaultdict(float)
     district_type_count = defaultdict(int)
 
-    for entry in col.find({}, limit=20):
-    # for entry in col.find():
+    for entry in col.find():
         seconds_taken = (datetime.strptime(entry['last_activity'], '%Y-%m-%d %H:%M:%S.%f+00')
                   - datetime.strptime(entry['timestamp'], '%Y-%m-%d %H:%M:%S.%f+00')).total_seconds()  # noqa: E501
 
+        if not isinstance(seconds_taken, float):
+            continue
         province = entry['province']
+        if not isinstance(province, str) or province == '' or province == 'nan':
+            continue
         district = entry['district']
+        if not isinstance(district, str) or district == '' or district == 'nan':
+            continue
+
+        # merge same with different names
+        if province == 'จังหวัดกรุงเทพมหานคร':
+            province = 'กรุงเทพมหานคร'
+
         by_district_sum[district] += seconds_taken
         by_district_count[district] += 1
         by_province_sum[province] += seconds_taken
@@ -50,7 +60,7 @@ def main():
         province_district_edges[province].append(district)
 
         types = entry['type']
-        if not isinstance(types, list):
+        if not isinstance(types, list) or len(types) == 0:
             continue
 
         for type_ in types:
