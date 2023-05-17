@@ -10,36 +10,25 @@ def main():
         print('Get data first!')
         return
 
-    V = G['V']
-    prov_nodes = V['province']
-    dist_nodes = V['district']
-    type_nodes = V['type']
-    E = G['E']
-
     net = Network(height='1024px', width='100%',
-                  bgcolor='#222222', font_color='white')
+                  bgcolor='black', font_color='white')
 
-    for v in prov_nodes:
-        net.add_node(v['id'], label=v['label'],
-                     title=time_data_label(v['seconds']),
-                     color='#ff0000')
-    for v in dist_nodes:
-        net.add_node(v['id'], label=v['label'],
-                     title=time_data_label(v['seconds']),
-                     color='#00ff00')
-    for v in type_nodes:
-        net.add_node(v['id'], label=v['label'],
-                     title=time_data_label(v['seconds']),
-                     color='#0000ff')
+    V = G['V']
+    for nodes, color in ((V['province'], '#ff0000'), (V['district'], '#00ff00'), (V['type'], '#0000ff')):  # noqa: E501
+        for v in nodes:
+            title, mins, hours, days = time_data_title(v['seconds'])
+            time_label = f'{days} วัน' if days > 0 else f'{hours} ชั่วโมง' if hours > 0 else f'{mins} นาที'  # noqa: E501
+            net.add_node(v['id'], label=f"{v['label']}\n{time_label}",
+                         title=title,
+                         color=color)
 
-    for e in E:
-        print(e)
+    for e in G['E']:
         net.add_edge(e['source'], e['target'])
 
     net.show('index.html', notebook=False)
 
 
-def time_data_label(seconds):
+def time_data_title(seconds):
     mins = seconds / 60
     hours = mins / 60
     days = hours / 24
@@ -49,7 +38,7 @@ def time_data_label(seconds):
     hours = int(hours)
     days = int(days)
 
-    return f'{seconds} วินาที\n{mins} นาที\n{hours} ชั่วโมง\n{days} วัน'
+    return f'{seconds} วินาที\n{mins} นาที\n{hours} ชั่วโมง\n{days} วัน', mins, hours, days  # noqa: E501
 
 
 if __name__ == '__main__':
