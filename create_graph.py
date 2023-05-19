@@ -10,11 +10,11 @@ def main():
         print('Get data first!')
         return
 
-    net = Network(height='1024px', width='100%',
-                  bgcolor='black', font_color='white')
+    net = Network(height='100vh', width='100vw',
+                  bgcolor='#343f56', font_color='white')
 
     V = G['V']
-    for nodes, color in ((V['province'], '#ff0000'), (V['district'], '#00ff00'), (V['type'], '#0000ff')):  # noqa: E501
+    for nodes, color in ((V['province'], '#f5e6ca'), (V['district'], '#ffb9b9'), (V['type'], 'white')):  # noqa: E501
         for v in nodes:
             title, mins, hours, days = time_data_title(v['seconds'])
             time_label = f'{days} วัน' if days > 0 else f'{hours} ชั่วโมง' if hours > 0 else f'{mins} นาที'  # noqa: E501
