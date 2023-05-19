@@ -21,7 +21,7 @@ def main():
             net.add_node(v['id'], label=f"{v['label']}\n{time_label}",
                          title=title,
                          color=color,
-                         size=max(5, days / 10))
+                         size=max(5, days / 7))
 
     for e in G['E']:
         net.add_edge(e['source'], e['target'])
